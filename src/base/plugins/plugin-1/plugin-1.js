@@ -1,0 +1,1 @@
+window.console.log('base-plugins-plugin-1.js');

@@ -1,0 +1,34 @@
+{
+  "name": "gulp-platform-template",
+  "version": "1.0.0",
+  "description": "使用gulp构建项目，实现项目工程化",
+  "main": "index.js",
+  "dependencies": {
+    "eslint": "^3.13.1",
+    "eslint-config-defaults": "^9.0.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-react": "^6.9.0",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-eslint": "^3.0.1",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-load-plugins": "^1.4.0",
+    "gulp-sequence": "^0.4.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huang-qing/gulp-platform-template.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/huang-qing/gulp-platform-template/issues"
+  },
+  "homepage": "https://github.com/huang-qing/gulp-platform-template#readme"
+}
