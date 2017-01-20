@@ -1,1 +1,1 @@
-console.log('base-inforlder-test.js');
+console.log('load base-inforlder-test.js');

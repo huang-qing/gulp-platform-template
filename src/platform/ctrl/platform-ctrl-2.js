@@ -1,1 +1,1 @@
-console.log('platform-ctrl-2.js');
+console.log('load platform-ctrl-2.js');
