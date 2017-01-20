@@ -113,12 +113,8 @@ function buildCss(type) {
                 suffix: '.min'
             })))
             //执行 autoprefixer、cleanCss 时会造成sourcemaps失效，官网说支持。但是一直不行，未找到有效解决方案。
-            
+            //clean-css 不支持 sourcemaps,替换为 csso
             .pipe(plugins.autoprefixer())
-            //  clean-css 不支持 sourcemaps,替换为 csso
-            // .pipe(plugins.cleanCss({
-            //     compatibility: 'ie8'
-            // }))
             .pipe(plugins.csso())
             .pipe(plugins.if(isDebug || isTest, plugins.sourcemaps.write('.')))
 
