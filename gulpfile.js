@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var merge = require('merge-stream');
 var plugins = require('gulp-load-plugins')();
 
 // gulpLoadPlugins({
@@ -43,30 +44,7 @@ gulp.task('debug:html', getTask(debugTaskPath, 'html', debugPath));
 gulp.task('build-debug', plugins.sequence('debug:clean', 'debug:css', 'debug:script', 'debug:html'));
 
 
-var paths = {
-    debug: {
-        src: './src/',
-        dest: './build/debug/',
-        css: {
-            src: './src/**/*.css',
-            dest: './build/debug/'
-        },
-        scss: {
-            src: './src/**/*.scss',
-            dest: './build/debug/'
-        },
-        script: {
-            src: './src/**/*.js',
-            dest: './build/debug/'
-        },
-        html: {
-            src: './src/index.html',
-            dest: './build/debug/',
-            inject: ['./build/debug/**/*.js', './build/debug/**/*.css']
-        }
-    }
 
-};
 
 
 var buildType = {
@@ -90,6 +68,151 @@ var buildType = {
 
 
 
+
+
+// function css(type) {
+//     return function () {
+//         var path = paths[type].css;
+
+//         return gulp.src(path.src)
+//             .pipe(plugins.plumber())
+//             .pipe(plugins.csslint())
+//             .pipe(plugins.csslint.formatter())
+//             .pipe(plugins.sourcemaps.init())
+//             .pipe(plugins.autoprefixer())
+//             .pipe(plugins.cleanCss({
+//                 compatibility: 'ie8'
+//             }))
+//             .pipe(plugins.rename({
+//                 suffix: '.min'
+//             }))
+//             .pipe(plugins.sourcemaps.write())
+//             .pipe(gulp.dest(path.dest));
+//     };
+// }
+
+// function sass(type) {
+//     return function () {
+//         var path = paths[type].scss;
+//         return gulp.src(path.src)
+//             .pipe(plugins.plumber())
+//             .pipe(plugins.sourcemaps.init())
+//             .pipe(plugins.sass().on('error', plugins.sass.logError))
+//             .pipe(plugins.autoprefixer())
+//             .pipe(plugins.cleanCss({
+//                 compatibility: 'ie8'
+//             }))
+//             .pipe(plugins.rename({
+//                 dirname: 'css',
+//                 suffix: '.scss.min'
+//             }))
+//             .pipe(plugins.sourcemaps.write())
+//             .pipe(gulp.dest(path.dest));
+//     };
+// }
+
+
+
+// function html(type) {
+//     return function () {
+//         var path = paths[type].html;
+//         var target = gulp.src(path.src);
+//         var sources = gulp.src(path.inject, {
+//             read: false
+//         });
+
+//         return target
+//             .pipe(plugins.plumber())
+//             .pipe(plugins.inject(sources))
+//             .pipe(plugins.if(!buildType.isDebug(type), plugins.htmlmin({
+//                 collapseWhitespace: true
+//             })))
+//             .pipe(gulp.dest(path.dest));
+//     };
+// }
+
+// function buildHtml(type) {
+
+//     return function () {
+//         var path = paths[type].html;
+
+//         return gulp.src(path.src)
+//             .pipe(plugins.if(!buildType.isDebug(type), plugins.htmlmin({
+//                 collapseWhitespace: true
+//             })))
+//             .pipe(gulp.dest(path.dest));
+//     };
+// }
+
+// function html(type) {
+//     return function () {
+//         var path = paths[type].html;
+//         var target = gulp.src(path.src);
+//         var sources = gulp.src(path.inject, {
+//             read: false
+//         });
+
+//         return target
+//             .pipe(plugins.plumber())
+//             .pipe(plugins.inject(sources))
+//             .pipe(plugins.if(!buildType.isDebug(type), plugins.htmlmin({
+//                 collapseWhitespace: true
+//             })))
+//             .pipe(gulp.dest(path.dest));
+//     };
+// }
+
+var paths = {
+    debug: {
+        src: 'src/',
+        dest: 'build/debug/',
+        css: {
+            src: 'src/**/*.css',
+            dest: 'build/debug/'
+        },
+        scss: {
+            src: 'src/**/*.scss',
+            dest: 'build/debug/'
+        },
+        script: {
+            src: 'src/**/*.js',
+            dest: 'build/debug/'
+        },
+        html: {
+            src: './src/index.html',
+            dest: './build/debug',
+            inject: {
+                source: ['./build/debug/**/*.js', './build/debug/**/*.css'],
+                dest: './build/debug',
+                src: './build/debug/index.html'
+            }
+
+        }
+    }
+
+};
+
+function injectHtmlTest(type) {
+
+    return function () {
+        var path = paths[type].html.inject;
+        //var target = gulp.src(path.dest);
+        var target = gulp.src('./build/debug/index.html');
+        //var target = gulp.src('./src/index.html');
+        var sources = gulp.src(path.src, {
+            read: false
+        });
+
+        return target
+            .pipe(plugins.plumber())
+            .pipe(plugins.inject(sources, {
+                relative: true
+            }))
+            //.pipe(plugins.clean())
+            .pipe(gulp.dest('./build/debug/'));
+    };
+}
+
 //清空文件夹
 function clean(type) {
     return function () {
@@ -100,52 +223,69 @@ function clean(type) {
     };
 }
 
-// function build(type) {
-//     //gulp.task('clean', clean(buildType.debug));
-//     return plugins.sequence(clean(type));
-// }
+function buildCss(type) {
 
-function css(type) {
     return function () {
-        var path = paths[type].css;
-
-        return gulp.src(path.src)
+        //var path = paths[type].css;
+        ///var es = require('event-stream');
+        //var merge = require('merge-stream');
+        //var cssStream = css(type);
+        //var sassStream = sass(type);
+        //var type = 'debug';
+        var cssPath = paths[type].css;
+        var css = gulp.src(cssPath.src)
             .pipe(plugins.plumber())
-            .pipe(plugins.csslint())
-            .pipe(plugins.csslint.formatter())
+            //.pipe(plugins.csslint())
+            //.pipe(plugins.csslint.formatter())
+            .pipe(plugins.sourcemaps.init());
+        // .pipe(plugins.autoprefixer())
+        // .pipe(plugins.cleanCss({
+        //     compatibility: 'ie8'
+        // }))
+        // .pipe(plugins.rename({
+        //     suffix: '.min'
+        // }))
+        // .pipe(plugins.sourcemaps.write())
+        // .pipe(gulp.dest(cssPath.dest));
+
+
+        var sassPath = paths[type].scss;
+        var sass = gulp.src(sassPath.src)
+            .pipe(plugins.plumber())
             .pipe(plugins.sourcemaps.init())
+            .pipe(plugins.sass().on('error', plugins.sass.logError));
+        // .pipe(plugins.autoprefixer())
+        // .pipe(plugins.cleanCss({
+        //     compatibility: 'ie8'
+        // }))
+        // .pipe(plugins.rename({
+        //     dirname: 'css',
+        //     suffix: '.scss.min'
+        // }))
+        // .pipe(plugins.sourcemaps.write())
+        // .pipe(gulp.dest(sassPath.dest));
+
+
+        //var target = es.merge(cssStream, sassStream);
+        return merge(css, sass).pipe(plugins.concat('main.min.css'))
             .pipe(plugins.autoprefixer())
             .pipe(plugins.cleanCss({
                 compatibility: 'ie8'
             }))
             .pipe(plugins.rename({
+                dirname: 'css',
                 suffix: '.min'
             }))
             .pipe(plugins.sourcemaps.write())
-            .pipe(gulp.dest(path.dest));
+            .pipe(gulp.dest(cssPath.dest));
+
+
+        // return target.pipe(plugins.concat('main.min.css'))
+        //     .pipe(gulp.dest(path.dest));
     };
 }
 
-function sass(type) {
-    return function () {
-        var path = paths[type].scss;
-        return gulp.src(path.src)
-            .pipe(plugins.plumber())
-            .pipe(plugins.sourcemaps.init())
-            .pipe(plugins.sass().on('error', plugins.sass.logError))
-            .pipe(plugins.autoprefixer())
-            .pipe(plugins.cleanCss({
-                compatibility: 'ie8'
-            }))
-            .pipe(plugins.rename({
-                suffix: '.min2'
-            }))
-            .pipe(plugins.sourcemaps.write())
-            .pipe(gulp.dest(path.dest));
-    };
-}
-
-function script(type) {
+function buildScript(type) {
     return function () {
         var path = paths[type].script;
         return gulp.src(path.src)
@@ -164,17 +304,11 @@ function script(type) {
     };
 }
 
-function html(type) {
+function buildHtml(type) {
     return function () {
         var path = paths[type].html;
-        var target = gulp.src(path.src);
-        var sources = gulp.src(path.inject, {
-            read: false
-        });
 
-        return target
-            .pipe(plugins.plumber())
-            .pipe(plugins.inject(sources))
+        return gulp.src(path.src)
             .pipe(plugins.if(!buildType.isDebug(type), plugins.htmlmin({
                 collapseWhitespace: true
             })))
@@ -182,19 +316,51 @@ function html(type) {
     };
 }
 
+function injectHtml(type) {
+    return function () {
+        var path = paths[type].html;
+        var injectPath = path.inject;
+        var target = gulp.src(injectPath.src);
+        //var target = gulp.src('./build/debug/index.html');
+        var sources = gulp.src(injectPath.source, {
+            read: false
+        });
+
+        return target
+            .pipe(plugins.plumber())
+            .pipe(plugins.inject(sources, {
+                //使用相对路径
+                relative: true
+            }))
+            // .pipe(plugins.if(!buildType.isDebug(type), plugins.htmlmin({
+            //     collapseWhitespace: true
+            // })))
+            .pipe(gulp.dest(path.dest));
+    };
+}
 
 gulp.task('build-debug-clean', clean(buildType.debug));
-gulp.task('build-debug-css', css(buildType.debug));
-gulp.task('build-debug-sass', sass(buildType.debug));
-gulp.task('build-debug-script', script(buildType.debug));
-gulp.task('build-debug-html', html(buildType.debug));
+// gulp.task('build-debug-css', css(buildType.debug));
+// gulp.task('build-debug-sass', sass(buildType.debug));
+
+gulp.task('build-debug-script', buildScript(buildType.debug));
+gulp.task('build-debug-html', buildHtml(buildType.debug));
+gulp.task('build-debug-css', buildCss(buildType.debug));
+gulp.task('build-debug-html-inject', injectHtml(buildType.debug));
 
 gulp.task('build-debug', plugins.sequence(
     'build-debug-clean',
-    'build-debug-sass',
     'build-debug-css',
     'build-debug-script',
-    'build-debug-html'));
+    'build-debug-html',
+    'build-debug-html-inject'
+));
+
+
+// gulp.task('test', plugins.sequence(
+//     'build-debug-clean',
+//     'build-debug-concatCss',
+//     'build-debug-html'));
 
 
 
