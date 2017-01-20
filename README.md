@@ -21,7 +21,7 @@
 
 + [gulp-uglify](https://www.npmjs.com/package/gulp-uglify) : Minify files with UglifyJS.
 
-+ [gulp-sourcemaps](https://www.npmjs.com/package/gulp-sourcemaps) : Source map support for Gulp.js
++ [gulp-sourcemaps](https://www.npmjs.com/package/gulp-sourcemaps) : Source map support for Gulp.js .[Plugins with gulp sourcemaps support](https://github.com/floridoo/gulp-sourcemaps/wiki/Plugins-with-gulp-sourcemaps-support)
 
 + [gulp-inject](https://www.npmjs.com/package/gulp-inject)
 A javascript, stylesheet and webcomponent injection plugin for Gulp, i.e. inject file references into your index.html
@@ -533,7 +533,7 @@ gulp.task('scripts', function () {
 ~~~
 ----
 
- ## [gulp-clean-css](https://www.npmjs.com/package/gulp-clean-css) : Minify css with clean-css.
+## [gulp-clean-css](https://www.npmjs.com/package/gulp-clean-css) : Minify css with clean-css.
 
 Regarding Issues
 
