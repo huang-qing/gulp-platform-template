@@ -3,14 +3,13 @@
   "version": "1.0.0",
   "description": "使用gulp构建项目，实现项目工程化",
   "main": "index.js",
-  "dependencies": {
-    "eslint": "^3.13.1",
-    "eslint-config-defaults": "^9.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "babel-eslint": "^7.1.1",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-react": "^6.9.0",
+    "bootstrap": "^3.3.7",
+    "eslint": "^3.14.0",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.1",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-clean": "^0.3.2",
@@ -18,6 +17,7 @@
     "gulp-csslint": "^1.0.0",
     "gulp-csso": "^2.0.0",
     "gulp-eslint": "^3.0.1",
+    "gulp-filter": "^5.0.0",
     "gulp-htmlmin": "^3.0.0",
     "gulp-if": "^2.0.2",
     "gulp-inject": "^4.2.0",
@@ -27,7 +27,9 @@
     "gulp-sass": "^3.1.0",
     "gulp-sequence": "^0.4.6",
     "gulp-sourcemaps": "^2.4.0",
-    "gulp-uglify": "^2.0.0"
+    "gulp-uglify": "^2.0.0",
+    "jquery": "^3.1.1",
+    "raphael": "^2.2.7"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

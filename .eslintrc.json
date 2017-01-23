@@ -1,0 +1,13 @@
+{
+    "extends": "standard",
+    "plugins": [
+        "standard",
+        "promise"
+    ],
+    "rules": {
+        // "semi": ["error", "always"],
+        // "indent": ["error", 4],
+        // "one-var": "off"
+        "space-before-function-paren": "off"
+    }
+}
