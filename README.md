@@ -3,6 +3,8 @@
 
 ## gulp plugins
 
++ [stream-series](https://www.npmjs.com/package/stream-series) : Waterfalls for streams
+
 + [gulp-load-plugins](https://www.npmjs.com/package/gulp-load-plugins) : Automatically load any gulp plugins in your package.json
 
 + [gulp-sequence](https://www.npmjs.com/package/gulp-sequence/): Run a series of gulp tasks in order.

@@ -17,11 +17,19 @@
             "port": 9229
         },
         {
+            "name": "Launch gulp",
+            "type": "node2",
+            "program": "${workspaceRoot}/node_modules/gulp/bin/gulp.js",
+            "cwd": "${workspaceRoot}",
+            "request": "launch",
+            "runtimeExecutable": null
+        },
+        {
             //"stopOnEntry": true,
             "name": "Attach node gulp.js",
             "type": "node2",
             "request": "attach",
-            "port":5859
+            "port": 5859
             //"program": "${workspaceRoot}/node_modules/gulp/bin/gulp.js",
             //"cwd": "${workspaceRoot}",
             //"runtimeExecutable": null

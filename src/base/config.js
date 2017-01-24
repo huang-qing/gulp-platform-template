@@ -13,6 +13,7 @@ module.exports = function () {
         js: {
             'jquery': 'js/jquery.js',
             'raphael': 'js/raphael.js'
-        }
+        },
+        eslint: false
     };
 };

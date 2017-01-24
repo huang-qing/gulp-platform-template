@@ -9,5 +9,8 @@
         // "indent": ["error", 4],
         // "one-var": "off"
         "space-before-function-paren": "off"
+    },
+    "globals":{
+        "$":true
     }
 }
