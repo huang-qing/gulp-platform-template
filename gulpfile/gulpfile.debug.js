@@ -1,11 +1,13 @@
-module.exports = function (gulp, plugins, buildConfig) {
+module.exports = function (gulp, plugins) {
     var merge = require('merge-stream'),
         // fs = require('fs'),
-        path = require('path'),
+        // path = require('path'),
         buildPaths,
-        util = require('./gulpfile/gulpfile.util');
+        util = require('../gulpfile/gulpfile.util'),
+        buildConfig;
 
     buildPaths = {
+        configSrc: `${util.rootPath}/src`,
         src: './src/',
         dest: './build/debug/',
         css: {
@@ -33,36 +35,49 @@ module.exports = function (gulp, plugins, buildConfig) {
         }
     };
 
+    buildConfig = util.getConfig(buildPaths.configSrc);
+
     function buildDebugInit() {
         var config = buildConfig,
             paths = buildPaths,
             htmlInject = paths.html.inject;
 
+        htmlInject.source = [];
         // 重置注入到html页面中的资源文件:遍历项目模块配置文件信息
-        htmlInject.source = config.forEach(function (configItem) {
+        config.forEach(function (configItem) {
             var dest = htmlInject.dest,
                 folderName = configItem.folderName,
                 css = configItem.css,
                 sass = configItem.sass,
                 js = configItem.js,
+                cssPaths,
+                sassPaths,
+                jsPaths,
+                allPaths,
+                excludePaths,
                 prioriSources,
                 otherSources;
 
             // 需要优先加载的css、js文件
-            prioriSources = util.mergeArray([util.getRealPaths(css, dest, folderName),
-                util.getRealPaths(sass, dest, folderName),
-                util.getRealPaths(js, dest, folderName)
-            ]);
+            cssPaths = util.getRealPaths(css, dest, folderName);
+            sassPaths = util.getRealPaths(sass, dest, folderName);
+            jsPaths = util.getRealPaths(js, dest, folderName);
 
+            prioriSources = util.mergeArray([cssPaths, sassPaths, jsPaths]);
+            // 将优先加载的文件路径加入到html注入资源列表
+            if (prioriSources && prioriSources.length > 0) {
+                htmlInject.source.push(prioriSources);
+            }
             // 其他的css、js文件:
-            otherSources = [`${dest}/${folderName}/**/*.css`,
-                `${dest}/${folderName}/**/*.js`
-            ].concat(prioriSources.map(function (source) {
+            allPaths = [`${dest}/${folderName}/**/*.css`, `${dest}/${folderName}/**/* .js`];
+            excludePaths = prioriSources.map(function (source) {
                 return `!${source}`;
-            }));
-
-            // 重写htlm-inject-source 配置参数
-            htmlInject.source = util.mergeArray([prioriSources, otherSources]);
+            });
+            otherSources = util.mergeArray([allPaths, excludePaths]);
+            // 将剩余加载的css、js的文件路径加入到html注入资源列表
+            if (otherSources && otherSources.length > 0) {
+                htmlInject.source.push(otherSources);
+            }
         });
     }
 
@@ -126,19 +141,17 @@ module.exports = function (gulp, plugins, buildConfig) {
             paths = _buildPaths.html;
 
         return gulp.src(paths.src)
-            .pipe(gulp.dest(path.dest));
+            .pipe(gulp.dest(paths.dest));
     }
 
     function injectHtml() {
         var _buildPaths = buildPaths,
             paths = _buildPaths.html,
-            injectPaths = path.inject,
+            injectPaths = paths.inject,
             target = gulp.src(injectPaths.src),
             srouces = [];
 
         injectPaths.source.forEach(function (item) {
-            // console.dir(item);
-            // console.dir('***');
             srouces.push(gulp.src(item, {
                 read: false
             }));
