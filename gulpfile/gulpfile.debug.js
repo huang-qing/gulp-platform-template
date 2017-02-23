@@ -8,7 +8,7 @@ module.exports = function (gulp, plugins) {
     // buildConfig;
 
     buildPaths = {
-        configSrc: `${util.rootPath}/src`,
+        // configSrc: `${util.rootPath}/src`,
         src: './src/',
         dest: './build/debug/',
         css: {
@@ -89,9 +89,10 @@ module.exports = function (gulp, plugins) {
         var paths = buildPaths,
             htmlInject = paths.html.inject,
             dest = htmlInject.dest,
-            exclude = htmlInject.exclude;
+            exclude = htmlInject.exclude,
+            source = util.getSource(dest, exclude);
         // 重置注入到html页面中的资源文件:遍历项目模块配置文件信息
-        htmlInject.source = util.getSource(dest, exclude);
+        htmlInject.source = source.all;
     }
 
     function clean() {
