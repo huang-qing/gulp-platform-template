@@ -1,0 +1,2 @@
+console.log('load base-inforlder-test.js');
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJwcm9qZWN0L2pzL2Jhc2UuanMuanMiXSwic291cmNlc0NvbnRlbnQiOlsiY29uc29sZS5sb2coJ2xvYWQgYmFzZS1pbmZvcmxkZXItdGVzdC5qcycpOyJdLCJmaWxlIjoicHJvamVjdC9qcy9iYXNlLmpzLmpzIn0=

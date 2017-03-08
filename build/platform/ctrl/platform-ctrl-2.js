@@ -1,0 +1,2 @@
+console.log('load platform-ctrl-2.js');
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJwbGF0Zm9ybS9jdHJsL3BsYXRmb3JtLWN0cmwtMi5qcyJdLCJzb3VyY2VzQ29udGVudCI6WyJjb25zb2xlLmxvZygnbG9hZCBwbGF0Zm9ybS1jdHJsLTIuanMnKTsiXSwiZmlsZSI6InBsYXRmb3JtL2N0cmwvcGxhdGZvcm0tY3RybC0yLmpzIn0=

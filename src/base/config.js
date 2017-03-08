@@ -1,4 +1,4 @@
-module.exports = function () {
+module.exports = function() {
     return {
         index: 0,
         // 对加载顺序有明确要求的CSS文件，按顺序写入配置项。
@@ -11,8 +11,10 @@ module.exports = function () {
         },
         // 对加载顺序有明确要求的js文件，按顺序写入配置项。
         js: {
+            'jquery-test': 'js/jquery-test.js',
+            'raphael-test': 'js/raphael-test.js',
             'jquery': 'js/jquery.js',
-            'raphael': 'js/raphael.js'
+            'raphael': 'js/raphael.min.js'
         },
         eslint: false
     };

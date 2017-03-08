@@ -1,91 +1,52 @@
-module.exports = function (gulp, plugins) {
+module.exports = function(gulp, plugins) {
+    // merge-stream:用于合并 gulp pipe输出的流文件
     var merge = require('merge-stream'),
-        // fs = require('fs'),
-        // path = require('path'),
+        // stream-series:用于保证流文件的执行顺序
         series = require('stream-series'),
         buildPaths,
         util = require('../gulpfile/gulpfile.util');
-    // buildConfig;
 
     buildPaths = {
         // configSrc: `${util.rootPath}/src`,
+        // 代码的源路径
         src: './src/',
-        dest: './build/debug/',
+        // 代码输出的路径
+        dest: './build/',
         css: {
+            // 代码源路径中全部的css文件
             src: './src/**/*.css',
-            dest: './build/debug/'
+            dest: './build/'
         },
         sass: {
+            // 代码源路径中全部的scss文件
             src: './src/**/*.scss',
             dest: './build/debug/'
         },
         script: {
+            // 代码源路径中全部的js文件
             src: ['./src/**/*.js'],
-            dest: './build/debug/',
+            dest: './build/',
+            // 排除src一级目录下的config.js文件，此文件用于gulp任务相关的配置
             exclude: ['config.js']
         },
         html: {
+            // 页面压缩：单页面应用的html文件
             src: './src/index.html',
-            dest: './build/debug',
+            dest: './build',
+            // 引入js、css自动注入
             inject: {
-                // 此文件路径会在buildInit时调整
+                // 此文件路径会在buildInit时调整,由config.js配置文件中的顺序进行加载
                 source: [],
+                // 排除src一级目录下的config.js文件，此文件用于gulp任务相关的配置
                 exclude: ['config.js'],
-                dest: './build/debug',
-                src: './build/debug/index.html'
+                dest: './build',
+                src: './build/index.html'
             }
 
         }
     };
 
-    // buildConfig = util.getConfig(buildPaths.configSrc);
-
     function buildDebugInit() {
-        // var config = buildConfig,
-        //     paths = buildPaths,
-        //     htmlInject = paths.html.inject;
-
-        // htmlInject.source = [];
-        // 重置注入到html页面中的资源文件:遍历项目模块配置文件信息
-        // config.forEach(function (configItem) {
-        //     var dest = htmlInject.dest,
-        //         folderName = configItem.folderName,
-        //         css = util.mapJsonValue(configItem.css),
-        //         sass = util.mapJsonValue(configItem.sass),
-        //         js = util.mapJsonValue(configItem.js),
-        //         cssPaths,
-        //         sassPaths,
-        //         excludePaths,
-        //         jsPaths,
-        //         allPaths,
-        //         prioriSources,
-        //         otherSources;
-
-        //     // 需要优先加载的css、js文件
-        //     cssPaths = util.getRealPaths(css, dest, folderName);
-        //     sassPaths = util.getRealPaths(sass, dest, folderName);
-        //     jsPaths = util.getRealPaths(js, dest, folderName);
-        //     excludePaths = util.getRealPaths(htmlInject.exclude, dest, folderName);
-
-        //     prioriSources = util.mergeArray([cssPaths, sassPaths, jsPaths]);
-        //     // 将优先加载的文件路径加入到html注入资源列表
-        //     if (prioriSources && prioriSources.length > 0) {
-        //         htmlInject.source.push(prioriSources);
-        //     }
-        //     // 其他的css、js文件:
-        //     allPaths = [`${dest}/${folderName}/**/*.css`, `${dest}/${folderName}/**/*.js`];
-        //     excludePaths = util.mergeArray([prioriSources, excludePaths]);
-        //     excludePaths = excludePaths.map(function (source) {
-        //         return `!${source}`;
-        //     });
-
-        //     otherSources = util.mergeArray([allPaths, excludePaths]);
-        //     // 将剩余加载的css、js的文件路径加入到html注入资源列表
-        //     if (otherSources && otherSources.length > 0) {
-        //         htmlInject.source.push(otherSources);
-        //     }
-        // });
-
         var paths = buildPaths,
             htmlInject = paths.html.inject,
             dest = htmlInject.dest,
@@ -109,18 +70,23 @@ module.exports = function (gulp, plugins) {
             css,
             sass;
 
+        // css gulp
         paths = _buildPaths.css;
         css = gulp.src(paths.src)
             .pipe(plugins.plumber())
             .pipe(plugins.csslint('csslintrc.json'))
             .pipe(plugins.csslint.formatter())
+            // css sourcemaps init
             .pipe(plugins.sourcemaps.init());
 
+        // sass gulp
         paths = _buildPaths.sass;
         sass = gulp.src(paths.src)
             .pipe(plugins.plumber())
+            // sass sourcemaps init
             .pipe(plugins.sourcemaps.init())
             .pipe(plugins.sass().on('error', plugins.sass.logError))
+            // 为避免命名冲突，对sass文件添加.sass后缀，形成文件名称为:xxxx.sass.csss
             .pipe(plugins.rename({
                 // dirname: 'css',
                 suffix: '.sass'
@@ -130,7 +96,7 @@ module.exports = function (gulp, plugins) {
         return merge(css, sass)
             // clean-css 不支持 sourcemaps,替换为 csso
             .pipe(plugins.autoprefixer())
-            // .pipe(plugins.csso())
+            .pipe(plugins.csso())
             .pipe(plugins.sourcemaps.write())
             .pipe(gulp.dest(_buildPaths.dest));
     }
@@ -141,6 +107,7 @@ module.exports = function (gulp, plugins) {
 
         return gulp.src(paths.src)
             .pipe(plugins.plumber())
+            // 暂不进行eslint检查，对代码格式要求较高
             // .pipe(plugins.eslint())
             // .pipe(plugins.eslint.format())
             // .pipe(plugins.eslint.failAfterError())
@@ -164,7 +131,7 @@ module.exports = function (gulp, plugins) {
             target = gulp.src(injectPaths.src),
             sources = [];
 
-        injectPaths.source.forEach(function (item) {
+        injectPaths.source.forEach(function(item) {
             sources.push(gulp.src(item, {
                 read: false
             }));
@@ -176,7 +143,7 @@ module.exports = function (gulp, plugins) {
         return target
             .pipe(plugins.plumber())
             .pipe(plugins.inject(sources, {
-                // 使用相对路径
+                // 使用相对路径！！
                 relative: true
             }))
             .pipe(gulp.dest(paths.dest));

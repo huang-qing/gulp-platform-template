@@ -1,0 +1,3 @@
+console.log('base-root-test.js');
+
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiIiwic291cmNlcyI6WyJwcm9qZWN0L2Jhc2UuanMiXSwic291cmNlc0NvbnRlbnQiOlsiY29uc29sZS5sb2coJ2Jhc2Utcm9vdC10ZXN0LmpzJyk7XHJcbiJdLCJmaWxlIjoicHJvamVjdC9iYXNlLmpzIn0=
