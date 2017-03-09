@@ -5,6 +5,8 @@
 
 + [stream-series](https://www.npmjs.com/package/stream-series) : Waterfalls for streams
 
++ [merge-stream](https://www.npmjs.com/package/merge-stream) : erge (interleave) a bunch of streams.
+
 + [gulp-load-plugins](https://www.npmjs.com/package/gulp-load-plugins) : Automatically load any gulp plugins in your package.json
 
 + [gulp-sequence](https://www.npmjs.com/package/gulp-sequence/): Run a series of gulp tasks in order.
@@ -38,3 +40,7 @@ A javascript, stylesheet and webcomponent injection plugin for Gulp, i.e. inject
 + [gulp-plumber](https://www.npmjs.com/package/gulp-plumber) : Prevent pipe breaking caused by errors from gulp plugins
 
 + [gulp-filter](https://www.npmjs.com/package/gulp-filter) : Filter files in a Vinyl stream
+
++ [gulp.spritesmith](https://www.npmjs.com/package/gulp.spritesmith) :Convert a set of images into a spritesheet and CSS variables via gulp
+
++ [gulp-imagemin](https://www.npmjs.com/package/gulp-imagemin) Minify PNG, JPEG, GIF and SVG images with imagemin

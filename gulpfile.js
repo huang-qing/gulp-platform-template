@@ -10,14 +10,19 @@ gulp.task('build-debug-clean', buildDebug.clean);
 gulp.task('build-debug-script', buildDebug.buildScript);
 gulp.task('build-debug-html', buildDebug.buildHtml);
 gulp.task('build-debug-css', buildDebug.buildCss);
+gulp.task('build-debug-image', buildDebug.buildImage);
 gulp.task('build-debug-html-inject', buildDebug.injectHtml);
+gulp.task('build-debug-sprite-png', buildDebug.buildPngSprite);
 
 var buildDebugTask = (function() {
     return plugins.sequence(
         'build-debug-clean',
-        'build-debug-css',
-        'build-debug-script',
-        'build-debug-html',
+        'build-debug-sprite-png', [
+            'build-debug-css',
+            'build-debug-script',
+            'build-debug-image',
+            'build-debug-html'
+        ],
         'build-debug-html-inject'
     );
 }());

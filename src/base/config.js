@@ -16,6 +16,9 @@ module.exports = function() {
             'jquery': 'js/jquery.js',
             'raphael': 'js/raphael.min.js'
         },
-        eslint: false
+        eslint: false,
+        pngSprite: {
+            'project-change-sprite@16': 'assets/images/project-change-manage'
+        }
     };
 };

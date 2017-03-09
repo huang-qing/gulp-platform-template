@@ -3,8 +3,10 @@ module.exports = function(gulp, plugins) {
     var merge = require('merge-stream'),
         // stream-series:用于保证流文件的执行顺序
         series = require('stream-series'),
+        buffer = require('vinyl-buffer'),
         buildPaths,
         util = require('../gulpfile/gulpfile.util');
+    // config = util.getConfig('./src');
 
     buildPaths = {
         // configSrc: `${util.rootPath}/src`,
@@ -43,6 +45,16 @@ module.exports = function(gulp, plugins) {
                 src: './build/index.html'
             }
 
+        },
+        image: {
+            src: ['./src/**/*.jpg', './src/**/*.png'],
+            dest: './build/'
+        },
+        pngSprite: {
+            src: './src/',
+            dest: './build/',
+            // 此文件路径会在buildInit时调整,按config.js配置文件中的配置进行雪碧图制作
+            source: []
         }
     };
 
@@ -53,7 +65,9 @@ module.exports = function(gulp, plugins) {
             exclude = htmlInject.exclude,
             source = util.getSource(dest, exclude);
         // 重置注入到html页面中的资源文件:遍历项目模块配置文件信息
-        htmlInject.source = source.all;
+        htmlInject.source = source.css.concat(source.sass).concat(source.js);
+        // 雪碧图 png
+        paths.pngSprite.source = source.pngSprite;
     }
 
     function clean() {
@@ -129,9 +143,18 @@ module.exports = function(gulp, plugins) {
             paths = _buildPaths.html,
             injectPaths = paths.inject,
             target = gulp.src(injectPaths.src),
+            dest = injectPaths.dest,
             sources = [];
 
-        injectPaths.source.forEach(function(item) {
+        injectPaths.source.forEach(function(item, index) {
+            item = item.map(function(path) {
+                if (path.indexOf('!') === 0) {
+                    return path.replace('!', `!${dest}/`);
+                } else {
+                    return `${dest}/${path}`;
+                }
+            });
+            // console.dir(item);
             sources.push(gulp.src(item, {
                 read: false
             }));
@@ -149,6 +172,59 @@ module.exports = function(gulp, plugins) {
             .pipe(gulp.dest(paths.dest));
     }
 
+    function buildImage() {
+        var _buildPaths = buildPaths,
+            paths = _buildPaths.image;
+
+        return gulp.src(paths.src)
+            .pipe(plugins.imagemin())
+            .pipe(gulp.dest(_buildPaths.dest));
+    }
+
+    function buildPngSprite() {
+        var _buildPaths = buildPaths,
+            paths = _buildPaths.pngSprite,
+            src,
+            dest,
+            size,
+            stream = merge();
+
+        paths.source.forEach(function(path) {
+            for (var i in path) {
+                src = `${paths.src}${path[i]}/*.png`;
+                dest = `${paths.dest}${path[i]}/`;
+                size = i.slice(i.indexOf('@') + 1);
+
+                // Generate our spritesheet
+                var spriteData = gulp.src(src).pipe(plugins.spritesmith({
+                    imgName: i + '.png',
+                    cssName: i + '.css',
+                    // 映射css样式表中的class命名格式
+                    cssVarMap: function(sprite) {
+                        sprite.name = `${size}-${sprite.name}`;
+                    }
+                }));
+                // Pipe image stream through image optimizer and onto disk
+                var imgStream = spriteData.img
+                    // DEV: We must buffer our stream into a Buffer for `imagemin`
+                    .pipe(buffer())
+                    .pipe(plugins.imagemin())
+                    .pipe(gulp.dest(dest));
+
+                // Pipe CSS stream through CSS optimizer and onto disk
+                var cssStream = spriteData.css
+                    .pipe(plugins.csso())
+                    .pipe(gulp.dest(dest));
+
+                // Return a merged stream to handle both `end` events
+                // 合并流 merge-stream
+                stream.add(merge(imgStream, cssStream));
+            }
+        });
+
+        return stream;
+    }
+
     buildDebugInit();
 
     return {
@@ -156,6 +232,8 @@ module.exports = function(gulp, plugins) {
         buildCss: buildCss,
         buildScript: buildScript,
         buildHtml: buildHtml,
-        injectHtml: injectHtml
+        injectHtml: injectHtml,
+        buildImage: buildImage,
+        buildPngSprite: buildPngSprite
     };
 };
