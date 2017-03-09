@@ -35,4 +35,5 @@ gulp.task('build-debug', buildDebugTask);
 // buildDebug.buildScript();
 // buildDebug.buildHtml();
 // buildDebug.buildCss();
+// buildDebug.buildPngSprite();
 // buildDebug.injectHtml();

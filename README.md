@@ -44,3 +44,10 @@ A javascript, stylesheet and webcomponent injection plugin for Gulp, i.e. inject
 + [gulp.spritesmith](https://www.npmjs.com/package/gulp.spritesmith) :Convert a set of images into a spritesheet and CSS variables via gulp
 
 + [gulp-imagemin](https://www.npmjs.com/package/gulp-imagemin) Minify PNG, JPEG, GIF and SVG images with imagemin
+
+
+## 执行debug模式下的项目创建
+
+~~~
+gulp build-debug
+~~~

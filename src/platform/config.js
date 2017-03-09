@@ -12,6 +12,9 @@ module.exports = function () {
         // 对加载顺序有明确要求的js文件，按顺序写入配置项。
         js: {
 
+        },
+        pngSprite: {
+            'common-sprite@24': 'assets/common-sprite'
         }
     };
 };

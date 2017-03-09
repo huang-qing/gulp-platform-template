@@ -181,19 +181,20 @@ module.exports = function(gulp, plugins) {
             .pipe(gulp.dest(_buildPaths.dest));
     }
 
+    // 生成png雪碧图
     function buildPngSprite() {
         var _buildPaths = buildPaths,
             paths = _buildPaths.pngSprite,
             src,
             dest,
-            size,
+            // size,
             stream = merge();
 
         paths.source.forEach(function(path) {
             for (var i in path) {
                 src = `${paths.src}${path[i]}/*.png`;
                 dest = `${paths.dest}${path[i]}/`;
-                size = i.slice(i.indexOf('@') + 1);
+                // size = i.slice(i.indexOf('@') + 1);
 
                 // Generate our spritesheet
                 var spriteData = gulp.src(src).pipe(plugins.spritesmith({
@@ -201,6 +202,7 @@ module.exports = function(gulp, plugins) {
                     cssName: i + '.css',
                     // 映射css样式表中的class命名格式
                     cssVarMap: function(sprite) {
+                        var size = i.slice(i.indexOf('@') + 1);
                         sprite.name = `${size}-${sprite.name}`;
                     }
                 }));
