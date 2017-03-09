@@ -254,3 +254,6 @@ paket-files/
 # build
 
 node_modules/
+
+build/
+dist/
