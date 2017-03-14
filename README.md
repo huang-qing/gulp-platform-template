@@ -1,7 +1,7 @@
 # gulp-platform-template
 使用gulp构建项目，实现项目工程化
 
-## gulp plugins
+## gulp plugins；
 
 + [stream-series](https://www.npmjs.com/package/stream-series) : Waterfalls for streams
 
@@ -44,6 +44,30 @@ A javascript, stylesheet and webcomponent injection plugin for Gulp, i.e. inject
 + [gulp.spritesmith](https://www.npmjs.com/package/gulp.spritesmith) :Convert a set of images into a spritesheet and CSS variables via gulp
 
 + [gulp-imagemin](https://www.npmjs.com/package/gulp-imagemin) Minify PNG, JPEG, GIF and SVG images with imagemin
+
++ [gulp-iconfont](https://www.npmjs.com/package/gulp-iconfont) : Create SVG/TTF/EOT/WOFF/WOFF2 fonts from several SVG icons with Gulp.
+
++ [gulp-svg-sprite](https://github.com/jkphl/gulp-svg-sprite) : SVG sprites & stacks galore — Gulp plugin wrapping around svg-sprite that reads in a bunch of SVG files, optimizes them and creates SVG sprites and CSS resources in various flavours
+
++ [gulp-svgstore](https://www.npmjs.com/package/gulp-svgstore) Combine svg files into one with <symbol> elements.
+
+
+
+
+## 重点使用说明
+
+### 雪碧图：
+
+关于png、iconfont、svg的对比[可参考这篇文章](https://github.com/yalishizhude/sprite-demo)
+
+[gulp.spritesmith](https://www.npmjs.com/package/gulp.spritesmith)用于制作png雪碧图
+
+[gulp-iconfont](https://www.npmjs.com/package/gulp-iconfont)用于制作字体图标
+
+[gulp-svg-sprites](https://www.npmjs.com/package/gulp-svg-sprites)用于制作svg图标
+
+
+[svg4everybody](https://github.com/jonathantneal/svg4everybody) 这个shim解决所有的IE浏览器(包括IE11)不支持获得外链SVG文件某个元件
 
 
 ## 执行debug模式下的项目创建

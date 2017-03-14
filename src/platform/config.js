@@ -14,7 +14,10 @@ module.exports = function () {
 
         },
         pngSprite: {
-            'common-sprite@24': 'assets/common-sprite'
+            'common-sprite@24': 'assets/images/common-to-pngsprite'
+        },
+        svgSprite: {
+            'svg-to-sprite': 'assets/images/svg-to-svgsprite'
         }
     };
 };

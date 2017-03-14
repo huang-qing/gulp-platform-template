@@ -55,6 +55,12 @@ module.exports = function(gulp, plugins) {
             dest: './build/',
             // 此文件路径会在buildInit时调整,按config.js配置文件中的配置进行雪碧图制作
             source: []
+        },
+        svgSprite: {
+            src: './src/',
+            dest: './build/',
+            // 此文件路径会在buildInit时调整,按config.js配置文件中的配置进行雪碧图制作
+            source: []
         }
     };
 
@@ -68,6 +74,8 @@ module.exports = function(gulp, plugins) {
         htmlInject.source = source.css.concat(source.sass).concat(source.js);
         // 雪碧图 png
         paths.pngSprite.source = source.pngSprite;
+        // sprite svg
+        paths.svgSprite.source = source.svgSprite;
     }
 
     function clean() {
@@ -88,8 +96,8 @@ module.exports = function(gulp, plugins) {
         paths = _buildPaths.css;
         css = gulp.src(paths.src)
             .pipe(plugins.plumber())
-            .pipe(plugins.csslint('csslintrc.json'))
-            .pipe(plugins.csslint.formatter())
+            // .pipe(plugins.csslint('csslintrc.json'))
+            // .pipe(plugins.csslint.formatter())
             // css sourcemaps init
             .pipe(plugins.sourcemaps.init());
 
@@ -227,6 +235,47 @@ module.exports = function(gulp, plugins) {
         return stream;
     }
 
+    // 生成svg雪碧图
+    function buildSvgSprite() {
+        var _buildPaths = buildPaths,
+            paths = _buildPaths.svgSprite,
+            src,
+            dest,
+            stream = merge();
+
+        paths.source.forEach(function(path) {
+            for (var i in path) {
+                src = `${paths.src}${path[i]}/*.svg`;
+                dest = `${paths.dest}${path[i]}/`;
+
+                // var config = {
+                //     svg: {
+                //         // sprite: `${i}.svg`,
+                //         // defs: `${i}.svg`,
+                //         symbols: `${i}.svg`
+                //     },
+                //     preview: {
+                //         symbols: `${i}.html`
+                //     },
+                //     cssFile: `${i}.css`,
+                //     mode: 'symbols'
+                // };
+
+                // console.log('svg-src:', src);
+                // console.log('svg-dest:', dest);
+
+                var svgStream = gulp.src(src)
+                    .pipe(plugins.svgSymbols())
+                    .pipe(gulp.dest(dest));
+
+                // 合并流 merge-stream
+                stream.add(svgStream);
+            }
+        });
+
+        return stream;
+    }
+
     buildDebugInit();
 
     return {
@@ -236,6 +285,7 @@ module.exports = function(gulp, plugins) {
         buildHtml: buildHtml,
         injectHtml: injectHtml,
         buildImage: buildImage,
-        buildPngSprite: buildPngSprite
+        buildPngSprite: buildPngSprite,
+        buildSvgSprite: buildSvgSprite
     };
 };

@@ -18,7 +18,7 @@ module.exports = function() {
         },
         eslint: false,
         pngSprite: {
-            'project-change-sprite@16': 'assets/images/project-change-manage'
+            'project-change-sprite@16': 'assets/images/projectChange-to-pngsprite'
         }
     };
 };

@@ -147,7 +147,8 @@ module.exports = (function() {
                 css: [],
                 sass: [],
                 js: [],
-                pngSprite: []
+                pngSprite: [],
+                svgSprite: []
             };
 
         buildConfig.forEach(function(config) {
@@ -156,6 +157,7 @@ module.exports = (function() {
                 sass,
                 js,
                 pngSprite = [],
+                svgSprite = [],
                 type;
 
             // css sass js 转换为数组对象
@@ -172,11 +174,18 @@ module.exports = (function() {
                 pngSprite[i] = `${folderName}/${pngSprite[i]}`;
             }
 
-            // 合并至资源中
+            // sprite svg类型的配置文件
+            svgSprite = config['svgSprite'];
+            for (var j in svgSprite) {
+                svgSprite[j] = `${folderName}/${svgSprite[j]}`;
+            }
+
+            // 将整理好的资源合并至数据源中
             source.css = source.css.concat(css);
             source.sass = source.sass.concat(sass);
             source.js = source.js.concat(js);
             source.pngSprite = source.pngSprite.concat(pngSprite);
+            source.svgSprite = source.svgSprite.concat(svgSprite);
         });
 
         // source.all = source.css.concat(source.sass).concat(source.js);

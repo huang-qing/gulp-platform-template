@@ -13,11 +13,14 @@ gulp.task('build-debug-css', buildDebug.buildCss);
 gulp.task('build-debug-image', buildDebug.buildImage);
 gulp.task('build-debug-html-inject', buildDebug.injectHtml);
 gulp.task('build-debug-sprite-png', buildDebug.buildPngSprite);
+gulp.task('build-debug-sprite-svg', buildDebug.buildSvgSprite);
 
 var buildDebugTask = (function() {
     return plugins.sequence(
-        'build-debug-clean',
-        'build-debug-sprite-png', [
+        'build-debug-clean', [
+            'build-debug-sprite-png',
+            'build-debug-sprite-svg'
+        ], [
             'build-debug-css',
             'build-debug-script',
             'build-debug-image',
