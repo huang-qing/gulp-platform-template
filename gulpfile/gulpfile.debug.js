@@ -248,19 +248,6 @@ module.exports = function(gulp, plugins) {
                 src = `${paths.src}${path[i]}/*.svg`;
                 dest = `${paths.dest}${path[i]}/`;
 
-                // var config = {
-                //     svg: {
-                //         // sprite: `${i}.svg`,
-                //         // defs: `${i}.svg`,
-                //         symbols: `${i}.svg`
-                //     },
-                //     preview: {
-                //         symbols: `${i}.html`
-                //     },
-                //     cssFile: `${i}.css`,
-                //     mode: 'symbols'
-                // };
-
                 // console.log('svg-src:', src);
                 // console.log('svg-dest:', dest);
 
@@ -276,6 +263,43 @@ module.exports = function(gulp, plugins) {
         return stream;
     }
 
+    function buildSvgInline() {
+        var _buildPaths = buildPaths,
+            paths = _buildPaths.svgSprite,
+            svgSrc,
+            injectSrc = _buildPaths.html.inject.src,
+            injectDest = _buildPaths.html.inject.dest,
+            stream = merge();
+
+        // 添加svg图片源
+        paths.source.forEach(function(path) {
+            for (var i in path) {
+                svgSrc = `${paths.src}${path[i]}/*.svg`;
+                // console.log('svg-src:', src);
+                var svgStream = gulp.src(svgSrc);
+                // 合并流 merge-stream
+                stream.add(svgStream);
+            }
+        });
+
+        var svgs = stream
+            .pipe(plugins.svgstore({
+                inlineSvg: true
+            }));
+
+        function fileContents(filePath, file) {
+            return file.contents.toString();
+        }
+
+        gulp.src(injectSrc)
+            .pipe(plugins.inject(svgs, {
+                transform: fileContents
+            }))
+            // 输出的路径为目录，而不是具体的html文件。
+            // 否则报错：Error: EEXIST: file already exists, mkdir
+            .pipe(gulp.dest(injectDest));
+    }
+
     buildDebugInit();
 
     return {
@@ -286,6 +310,7 @@ module.exports = function(gulp, plugins) {
         injectHtml: injectHtml,
         buildImage: buildImage,
         buildPngSprite: buildPngSprite,
-        buildSvgSprite: buildSvgSprite
+        buildSvgSprite: buildSvgSprite,
+        buildSvgInline: buildSvgInline
     };
 };

@@ -51,6 +51,8 @@ A javascript, stylesheet and webcomponent injection plugin for Gulp, i.e. inject
 
 + [gulp-svgstore](https://www.npmjs.com/package/gulp-svgstore) Combine svg files into one with <symbol> elements.
 
++ [gulp-svgmin](https://www.npmjs.com/package/gulp-svgmin) Minify SVG with SVGO.
+
 
 
 

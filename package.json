@@ -29,6 +29,7 @@
     "gulp-sequence": "^0.4.6",
     "gulp-sourcemaps": "^2.4.0",
     "gulp-svg-symbols": "^2.0.2",
+    "gulp-svgstore": "^6.1.0",
     "gulp-uglify": "^2.0.0",
     "gulp.spritesmith": "^6.3.0",
     "jquery": "^3.1.1",

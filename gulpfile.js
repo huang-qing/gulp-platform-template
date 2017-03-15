@@ -14,6 +14,7 @@ gulp.task('build-debug-image', buildDebug.buildImage);
 gulp.task('build-debug-html-inject', buildDebug.injectHtml);
 gulp.task('build-debug-sprite-png', buildDebug.buildPngSprite);
 gulp.task('build-debug-sprite-svg', buildDebug.buildSvgSprite);
+gulp.task('build-debug-sprite-svg-inline', buildDebug.buildSvgInline);
 
 var buildDebugTask = (function() {
     return plugins.sequence(
@@ -26,7 +27,8 @@ var buildDebugTask = (function() {
             'build-debug-image',
             'build-debug-html'
         ],
-        'build-debug-html-inject'
+        'build-debug-html-inject',
+        'build-debug-sprite-svg-inline'
     );
 }());
 
