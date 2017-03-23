@@ -53,7 +53,7 @@ A javascript, stylesheet and webcomponent injection plugin for Gulp, i.e. inject
 
 + [gulp-svgmin](https://www.npmjs.com/package/gulp-svgmin) Minify SVG with SVGO.
 
-
++ [gulp-iconfont-css](https://www.npmjs.com/package/gulp-iconfont-css) Generate (S)CSS file for icon font created with Gulp
 
 
 ## 重点使用说明
@@ -70,6 +70,7 @@ A javascript, stylesheet and webcomponent injection plugin for Gulp, i.e. inject
 
 
 [svg4everybody](https://github.com/jonathantneal/svg4everybody) 这个shim解决所有的IE浏览器(包括IE11)不支持获得外链SVG文件某个元件
+
 
 
 ## 执行debug模式下的项目创建

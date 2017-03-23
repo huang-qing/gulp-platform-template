@@ -19,12 +19,12 @@
 
     <p>svg-external 16</p>
     <svg role="img" class="icon icon-16">
-        <use xlink:href="platform/assets/images/svg-to-svgsprite/svg-symbols.svg#all"></use>
+        <use xlink:href="platform/assets/images/svg-to-svgsprite/svg-to-sprite-symbols.svg#bars"></use>
     </svg>
 
     <p>svg-external 24</p>
     <svg role="img" class="icon icon-24 color-green">
-        <use xlink:href="project/images/svg/svg-symbols.svg#001-home"></use>
+        <use xlink:href="project/images/svg/project-svg-sprite-symbols.svg#001-home"></use>
     </svg>
 
     <p>svg-inline 16</p>
@@ -32,8 +32,16 @@
         <use xlink:href="#001-home"></use>
     </svg>
 
+    <p>svg-inline 24</p>
+    <svg role="img" class="icon icon-24 color-green">
+        <use xlink:href="#bars"></use>
+    </svg>
 
+    <p>fontIcon 16</p>
+    <span class='icon icon-16 project-svg-sprite project-svg-sprite-001-home color-blue'></span>
 
+    <p>fontIcon 24</p>
+    <span class='icon icon-24 svg-to-sprite svg-to-sprite-clock color-blue'></span>
 
     <p>raphael </p>
     <div id='raphael'></div>
@@ -43,7 +51,7 @@
         <!-- inject:svg -->
         <!-- endinject -->
     </div>
-    
+
     <!-- inject:js -->
     <!-- endinject -->
     <!--主js文件，直接固定-->

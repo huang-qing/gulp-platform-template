@@ -15,12 +15,14 @@ gulp.task('build-debug-html-inject', buildDebug.injectHtml);
 gulp.task('build-debug-sprite-png', buildDebug.buildPngSprite);
 gulp.task('build-debug-sprite-svg', buildDebug.buildSvgSprite);
 gulp.task('build-debug-sprite-svg-inline', buildDebug.buildSvgInline);
+gulp.task('build-debug-iconfont', buildDebug.buildIconFont);
 
 var buildDebugTask = (function() {
     return plugins.sequence(
         'build-debug-clean', [
             'build-debug-sprite-png',
-            'build-debug-sprite-svg'
+            'build-debug-sprite-svg',
+            'build-debug-iconfont'
         ], [
             'build-debug-css',
             'build-debug-script',

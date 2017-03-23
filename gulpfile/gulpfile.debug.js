@@ -6,7 +6,6 @@ module.exports = function(gulp, plugins) {
         buffer = require('vinyl-buffer'),
         buildPaths,
         util = require('../gulpfile/gulpfile.util');
-    // config = util.getConfig('./src');
 
     buildPaths = {
         // configSrc: `${util.rootPath}/src`,
@@ -252,7 +251,16 @@ module.exports = function(gulp, plugins) {
                 // console.log('svg-dest:', dest);
 
                 var svgStream = gulp.src(src)
-                    .pipe(plugins.svgSymbols())
+                    .pipe(plugins.svgSymbols({
+                        // slug: function(name) {
+                        //     return name;
+                        // }
+                    }))
+                    .pipe(plugins.rename({
+                        // dirname: '',
+                        // suffix: '.svg',
+                        basename: i + '-symbols'
+                    }))
                     .pipe(gulp.dest(dest));
 
                 // 合并流 merge-stream
@@ -263,6 +271,7 @@ module.exports = function(gulp, plugins) {
         return stream;
     }
 
+    // 生成svg inline
     function buildSvgInline() {
         var _buildPaths = buildPaths,
             paths = _buildPaths.svgSprite,
@@ -291,7 +300,7 @@ module.exports = function(gulp, plugins) {
             return file.contents.toString();
         }
 
-        gulp.src(injectSrc)
+        return gulp.src(injectSrc)
             .pipe(plugins.inject(svgs, {
                 transform: fileContents
             }))
@@ -300,6 +309,57 @@ module.exports = function(gulp, plugins) {
             .pipe(gulp.dest(injectDest));
     }
 
+    // 生成字体图片
+    function buildIconFont(done) {
+        var _buildPaths = buildPaths,
+            paths = _buildPaths.svgSprite,
+            src,
+            dest = paths.dest,
+            runTimestamp = Math.round(Date.now() / 1000),
+            iconStream = merge();
+
+        // 添加svg图片源,生成字体文件
+        paths.source.forEach(function(path) {
+            for (var i in path) {
+                src = `${paths.src}${path[i]}/*.svg`;
+                dest = `${paths.dest}${path[i]}/`;
+                var fontName = i;
+                var svgStream = gulp.src(src)
+                    .pipe(plugins.iconfontCss({
+                        fontName: fontName,
+                        // path: 'node_modules/gulp-iconfont-css/templates/_icons.scss',
+                        // 生成css文件的路径（名称）
+                        targetPath: fontName + 'fontIcon.css',
+                        // 引用字体文件的路径，这里为同一层
+                        fontPath: '',
+                        cssClass: fontName,
+                        centerHorizontally: true
+                    }))
+                    .pipe(plugins.iconfont({
+                        // required
+                        fontName: fontName,
+                        // recommended option
+                        // prependUnicode: true ,
+                        // default, 'woff2' and 'svg' are available
+                        formats: ['ttf', 'eot', 'woff', 'woff2', 'svg'],
+                        // recommended to get consistent builds when watching files
+                        timestamp: runTimestamp
+                    }))
+                    .on('glyphs', function(glyphs, options) {
+                        // CSS templating, e.g.
+                        // console.log(glyphs, options);
+                    })
+                    .pipe(gulp.dest(dest));
+
+                // 合并流 merge-stream
+                iconStream.add(svgStream);
+            }
+        });
+
+        return iconStream;
+    }
+
+    // 初始化配置参数
     buildDebugInit();
 
     return {
@@ -311,6 +371,7 @@ module.exports = function(gulp, plugins) {
         buildImage: buildImage,
         buildPngSprite: buildPngSprite,
         buildSvgSprite: buildSvgSprite,
-        buildSvgInline: buildSvgInline
+        buildSvgInline: buildSvgInline,
+        buildIconFont: buildIconFont
     };
 };

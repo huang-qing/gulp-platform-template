@@ -5,14 +5,21 @@
 .icon-16 {
     width: 16px;
     height: 16px;
+    font-size: 16px;
 }
 
 .icon-24 {
     width: 24px;
     height: 24px;
+    font-size: 24px;
 }
 
-.color-green
-{
-    fill:#2DCC9F;
+.color-green {
+    fill: #2DCC9F;
+    color:#2DCC9F;
+}
+
+.color-blue {
+    fill: #2B9BD2;
+    color:#2B9BD2;
 }
